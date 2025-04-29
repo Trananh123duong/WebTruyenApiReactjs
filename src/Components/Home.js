@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [getdata, setData] = useState([]);
@@ -60,7 +61,7 @@ const Home = () => {
                       ))
                       : "Others"}
                     </Card.Text>
-                    <Button variant="primary btn-sm">More Detail</Button>
+                    <Button variant="primary btn-sm" as={Link} to={`/comics/${item.slug}`}>More Detail</Button>
                   </Card.Body>
                 </Card>
               </Col>
