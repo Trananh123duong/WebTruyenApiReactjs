@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import { Link, useParams } from 'react-router-dom';
 
@@ -8,8 +8,10 @@ const DetailPage = () => {
   const {slug} = useParams();
 
   const [getdata, setData] = useState([]);
+  const [getDataChapter, setDataChapter] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [IsModalOpen, setIsModalOpen] = useState(false);
 
   const item = getdata?.data?.data?.item;
 
@@ -31,7 +33,19 @@ const DetailPage = () => {
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error}</p>
 
-  const handleReadChapter = async (chapter_api) => {};
+  const handleClose = () => setIsModalOpen(false);
+  const handleReadChapter = async (chapter_api) => {
+    try {
+      const response = await axios.get(`${chapter_api}`);
+      setDataChapter(response.data);
+      setLoading(false);
+      console.log(response);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -114,6 +128,30 @@ const DetailPage = () => {
             </Card>
           </Col>
         </Row>
+        {IsModalOpen && (
+          <Modal show={IsModalOpen} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Chapter {getDataChapter.data.item.chapter_name} - {getDataChapter.data.item.comic_name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {getDataChapter.data.item.chapter_image && getDataChapter.data.item.chapter_image.length > 0 ?
+                getDataChapter.data.item.chapter_image.map(
+                  (chapterImage, index) => 
+                  <Card.Img
+                    style={{margin:0}}
+                    variant='top'
+                    src={`${getDataChapter.data.domain_cdn}/${getDataChapter.data.item.chapter_path}/${chapterImage.image_file}`}
+                  ></Card.Img>
+                )
+              : "No Image Loading..."}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
       </Container>
     </>
   )
