@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const DetailPage = () => {
   const {slug} = useParams();
@@ -31,12 +31,15 @@ const DetailPage = () => {
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error}</p>
 
+  const handleReadChapter = async (chapter_api) => {};
+
   return (
     <>
       <Helmet>
         <title>{getdata.data.data.seoOnPage.titleHead}</title>
       </Helmet>
       <Container>
+        <Button as={Link} to="/">Back to home</Button>
         <Row>
           <Col>
             <Card>
@@ -78,6 +81,36 @@ const DetailPage = () => {
                   : "Others"}
                 </Card.Text>
               </Card.Body>
+            </Card>
+          </Col>
+          <Col>
+            <Card>
+              <ListGroup className='scrollable-list'>
+                {item.chapters && item.chapters.length > 0 ? (
+                  item.chapters.map((chapter, index) => (
+                    <div key={index}>
+                      <h5>{chapter.server_name}</h5>
+                      <ListGroup.Item>
+                        {chapter.server_data && chapter.server_data.length > 0 ? (
+                          chapter.server_data.map((listChapter, subIndex) => (
+                            <div
+                              className="chapter_click"
+                              key={subIndex}
+                              onClick={() => handleReadChapter(listChapter.chapter_api_data)}
+                            >
+                              Chapter : {listChapter.chapter_name}
+                            </div>
+                          ))
+                        ) : (
+                          <span>Chapter is comming soon ...</span>
+                        )}
+                      </ListGroup.Item>
+                    </div>
+                  ))
+                ) : (
+                  <span>Chapter is comming soon ...</span>
+                )}
+              </ListGroup>
             </Card>
           </Col>
         </Row>
