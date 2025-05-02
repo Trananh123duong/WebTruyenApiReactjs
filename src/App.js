@@ -3,6 +3,7 @@ import './App.css';
 import DetailPage from './Components/DetailPage';
 import Home from './Components/Home';
 import Genre from './Components/Genre';
+import Trending from './Components/Trending';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/comics/:slug" element={<DetailPage></DetailPage>}></Route>
         <Route path="/genre/:slug" element={<Genre></Genre>}></Route>
+        <Route path="/trending/:slug" element={<Trending></Trending>}></Route>
       </Routes>
     </Router>
   );
