@@ -1,11 +1,14 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import axios from 'axios';
 import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Menu from './Include/Menu';
 
-const Home = () => {
+const Genre = () => {
+  const { slug } = useParams();
+
   const [getdata, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +18,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://otruyenapi.com/v1/api/home");
+        const response = await axios.get(`https://otruyenapi.com/v1/api/the-loai/${slug }`);
         setData(response);
         setLoading(false);
         console.log(response);
@@ -25,7 +28,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [slug]);
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error}</p>
@@ -80,4 +83,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Genre;

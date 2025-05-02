@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import { Link, useParams } from 'react-router-dom';
+import Menu from './Include/Menu';
 
 const DetailPage = () => {
   const {slug} = useParams();
@@ -53,6 +54,7 @@ const DetailPage = () => {
         <title>{getdata.data.data.seoOnPage.titleHead}</title>
       </Helmet>
       <Container>
+        <Menu></Menu>
         <Button as={Link} to="/">Back to home</Button>
         <Row>
           <Col>

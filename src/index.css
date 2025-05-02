@@ -19,3 +19,7 @@ code {
   color: brown;
   text-decoration: underline;
 }
+.dropdown-menu.show {
+  height: 500px;
+  overflow: auto;
+}
